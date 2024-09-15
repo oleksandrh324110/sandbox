@@ -1,5 +1,4 @@
 #include "math.h"
-#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -8,8 +7,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
 
-#define WIDTH 720
-#define HEIGHT 480
+#define WIDTH 1000
+#define HEIGHT 700
 #define CELL 5
 
 typedef struct {
@@ -53,6 +52,7 @@ int main(int argc, char **argv) {
           running = false;
         else if (event.key.keysym.scancode == SDL_SCANCODE_C) {
           memset(grid, 0, sizeof(grid));
+          memset(next_grid, 0, sizeof(next_grid));
         } else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
           for (int x = 0; x < WIDTH / CELL; x++) {
             for (int y = 0; y < HEIGHT / CELL; y++) {
@@ -88,11 +88,10 @@ int main(int argc, char **argv) {
 
     if (mouse.button.left && !grid[mouse.pos.x / CELL][mouse.pos.y / CELL]) {
       grid[mouse.pos.x / CELL][mouse.pos.y / CELL] = last_green;
-      if (last_green == 1)
-        last_green_direction = true;
-      if (last_green == 255)
-        last_green_direction = false;
+
       last_green += last_green_direction ? 1 : -1;
+      if (last_green == 1 || last_green == 255)
+        last_green_direction = !last_green_direction;
     } else if (mouse.button.right) {
       grid[mouse.pos.x / CELL][mouse.pos.y / CELL] = 0;
     }
