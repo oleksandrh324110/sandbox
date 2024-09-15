@@ -19,5 +19,5 @@ add_subdirectory("lib/sdl")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.c")
 add_executable(main ${SOURCES})
-target_link_options(main PRIVATE -mwindows)
+# target_link_options(main PRIVATE -mwindows)
 target_link_libraries(main SDL2main SDL2-static)

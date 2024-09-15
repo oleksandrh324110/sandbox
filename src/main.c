@@ -7,8 +7,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_main.h>
 
-#define WIDTH 1000
-#define HEIGHT 700
+#define WIDTH 720
+#define HEIGHT 480
 #define CELL 5
 
 typedef struct {
