@@ -1,7 +1,6 @@
 #include "math.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <time.h>
 
 #include <SDL2/SDL.h>
@@ -16,11 +15,10 @@ typedef struct {
   int y;
 } vec2;
 
-typedef struct {
+typedef struct Mouse {
   vec2 pos;
-  struct {
+  struct Button {
     bool left;
-    bool middle;
     bool right;
   } button;
 } Mouse;
@@ -42,7 +40,7 @@ int main(int argc, char **argv) {
 
   bool running = true;
   while (running) {
-    for (SDL_Event event; SDL_PollEvent(&event);) {
+    for (SDL_Event event; SDL_PollEvent(&event) && running;) {
       switch (event.type) {
       case SDL_QUIT:
         running = false;
@@ -61,19 +59,17 @@ int main(int argc, char **argv) {
           }
         }
       case SDL_MOUSEBUTTONDOWN:
-        if (event.button.button == SDL_BUTTON_LEFT)
-          mouse.button.left = true;
-        if (event.button.button == SDL_BUTTON_RIGHT)
-          mouse.button.right = true;
+        mouse.button.left = event.button.button == SDL_BUTTON_LEFT;
+        mouse.button.right = event.button.button == SDL_BUTTON_RIGHT;
         break;
       case SDL_MOUSEBUTTONUP:
-        if (event.button.button == SDL_BUTTON_LEFT)
-          mouse.button.left = false;
-        if (event.button.button == SDL_BUTTON_RIGHT)
-          mouse.button.right = false;
+        mouse.button.left = event.button.button == SDL_BUTTON_LEFT && false;
+        mouse.button.right = event.button.button == SDL_BUTTON_RIGHT && false;
         break;
       }
     }
+    if (!running)
+      break;
 
     SDL_GetMouseState(&mouse.pos.x, &mouse.pos.y);
     mouse.pos.x = clamp(mouse.pos.x, 0, WIDTH - 1);
